@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-files",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Babel plugin to generate references to files elsewhere on the file system",
   "main": "index.js",
   "files": [
