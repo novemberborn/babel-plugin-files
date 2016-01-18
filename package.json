@@ -1,0 +1,22 @@
+{
+  "name": "babel-plugin-files",
+  "version": "0.0.0",
+  "description": "Babel plugin to generate references to files elsewhere on the file system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/novemberborn/babel-plugin-files.git"
+  },
+  "keywords": [
+    "babel-plugin"
+  ],
+  "author": "Mark Wubben (https://novemberborn.net/)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/novemberborn/babel-plugin-files/issues"
+  },
+  "homepage": "https://github.com/novemberborn/babel-plugin-files#readme"
+}
