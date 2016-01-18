@@ -4,7 +4,7 @@
   "description": "Babel plugin to generate references to files elsewhere on the file system",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/novemberborn/babel-plugin-files/issues"
   },
-  "homepage": "https://github.com/novemberborn/babel-plugin-files#readme"
+  "homepage": "https://github.com/novemberborn/babel-plugin-files#readme",
+  "devDependencies": {
+    "standard": "^5.4.1"
+  }
 }
