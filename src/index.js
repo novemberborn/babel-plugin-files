@@ -1,10 +1,11 @@
 import { readFileSync } from 'fs'
-import { dirname, resolve } from 'path'
+import { dirname, relative, resolve } from 'path'
 
 import commonPathPrefix from 'common-path-prefix'
 import glob from 'glob'
 import md5Hex from 'md5-hex'
 import mime from 'mime-types'
+import pkgDir from 'pkg-dir'
 
 function assertImportDefaultSpecifier (path, specifiers) {
   let hasError = specifiers.length === 0
@@ -33,7 +34,7 @@ function getPattern (path, source) {
   return pattern
 }
 
-function describeFile (src) {
+function describeFile (src, relativeSrc) {
   const contents = readFileSync(src)
   const contentLength = contents.length
   const tag = md5Hex(contents)
@@ -45,7 +46,7 @@ function describeFile (src) {
     contentLength,
     contentType,
     mimeType,
-    src,
+    src: relativeSrc,
     tag
   }
 }
@@ -62,6 +63,7 @@ export default function ({ types: t }) {
         assertImportDefaultSpecifier(path, specifiers)
 
         const fromDir = dirname(file.file.opts.filename)
+        const relativeTo = pkgDir.sync(fromDir) || process.cwd()
         const matches = glob.sync(getPattern(path, source), {
           // Search relative to the source file, assuming that location is
           // derived correctly.
@@ -75,7 +77,7 @@ export default function ({ types: t }) {
         const files = []
         for (const filepath of matches) {
           const src = resolve(fromDir, filepath)
-          const desc = describeFile(src)
+          const desc = describeFile(src, relative(relativeTo, src))
           const relpath = filepath.slice(prefix.length)
           files.push(relpath)
           descriptions[relpath] = desc

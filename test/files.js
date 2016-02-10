@@ -1,14 +1,22 @@
-import { resolve } from 'path'
+import { join } from 'path'
 
 import test from 'ava'
 import { transform as babelTransform } from 'babel-core'
+import proxyquire from 'proxyquire'
 
-function transform (code) {
+const regularPlugin = require('../').default
+const pluginWithoutPkgDir = proxyquire('../', {
+  'pkg-dir': {
+    sync () { return null }
+  }
+}).default
+
+function transform (code, sourceRoot = __dirname, plugin = regularPlugin) {
   return babelTransform(code, {
     babelrc: false,
-    filename: 'files.js',
-    sourceRoot: __dirname,
-    plugins: ['../']
+    filename: join(sourceRoot, 'files.js'),
+    sourceRoot,
+    plugins: [plugin]
   }).code
 }
 
@@ -16,8 +24,8 @@ function attempt (code) {
   return Promise.resolve(code).then(transform)
 }
 
-function check (msg) {
-  const preface = 'files.js: '
+function check (msg, sourceRoot = __dirname) {
+  const preface = `${join(sourceRoot, 'files.js')}: `
   return (err) => err instanceof SyntaxError && err.message.slice(0, preface.length) === preface && err.message.slice(preface.length) === msg
 }
 
@@ -59,21 +67,21 @@ test('generates an object with descriptions of the matched files', (t) => {
     contentLength: 44585,
     contentType: 'text/html; charset=utf-8',
     mimeType: 'text/html',
-    src: '${resolve(__dirname, 'fixtures', 'rfc3092.html')}',
+    src: '${join('test', 'fixtures', 'rfc3092.html')}',
     tag: '1b8c719d6a9c0398b7b9b3ff85763413'
   },
   'rfc3092.pdf': {
     contentLength: 38334,
     contentType: 'application/pdf',
     mimeType: 'application/pdf',
-    src: '${resolve(__dirname, 'fixtures', 'rfc3092.pdf')}',
+    src: '${join('test', 'fixtures', 'rfc3092.pdf')}',
     tag: '5459e23f9445a65c2bf61eeac5882852'
   },
   'rfc3092.txt': {
     contentLength: 29235,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${resolve(__dirname, 'fixtures', 'rfc3092.txt')}',
+    src: '${join('test', 'fixtures', 'rfc3092.txt')}',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
   }
 };
@@ -82,13 +90,13 @@ Object.freeze(foo);`)
 
 test('ignores matched directories', (t) => {
   t.is(
-    transform("import foo from 'files:fixtures/!(*.html|*.pdf)'"),
+    transform("import foo from 'files:fixtures/!(*.html|*.pdf|with-package)'"),
     `const foo = {
   'rfc3092.txt': {
     contentLength: 29235,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${resolve(__dirname, 'fixtures', 'rfc3092.txt')}',
+    src: '${join('test', 'fixtures', 'rfc3092.txt')}',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
   }
 };
@@ -97,21 +105,53 @@ Object.freeze(foo);`)
 
 test('object keys are the file paths without the common path prefix', (t) => {
   t.is(
-    transform("import foo from 'files:fixtures/**/*.txt'"),
+    transform("import foo from 'files:fixtures/{*.txt,nested/*.txt}'"),
     `const foo = {
   'nested/foo.txt': {
     contentLength: 0,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${resolve(__dirname, 'fixtures', 'nested', 'foo.txt')}',
+    src: '${join('test', 'fixtures', 'nested', 'foo.txt')}',
     tag: 'd41d8cd98f00b204e9800998ecf8427e'
   },
   'rfc3092.txt': {
     contentLength: 29235,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${resolve(__dirname, 'fixtures', 'rfc3092.txt')}',
+    src: '${join('test', 'fixtures', 'rfc3092.txt')}',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
+  }
+};
+Object.freeze(foo);`)
+})
+
+test('file src is relative to the closest package.json', (t) => {
+  const sourceRoot = join(__dirname, 'fixtures', 'with-package')
+  t.is(
+    transform("import foo from 'files:*.txt'", sourceRoot),
+    `const foo = {
+  'foo.txt': {
+    contentLength: 0,
+    contentType: 'text/plain; charset=utf-8',
+    mimeType: 'text/plain',
+    src: 'foo.txt',
+    tag: 'd41d8cd98f00b204e9800998ecf8427e'
+  }
+};
+Object.freeze(foo);`)
+})
+
+test('file src is relative to working directory if there is no closest package.json', (t) => {
+  const sourceRoot = join(__dirname, 'fixtures', 'with-package')
+  t.is(
+    transform("import foo from 'files:*.txt'", sourceRoot, pluginWithoutPkgDir),
+    `const foo = {
+  'foo.txt': {
+    contentLength: 0,
+    contentType: 'text/plain; charset=utf-8',
+    mimeType: 'text/plain',
+    src: '${join('fixtures', 'with-package', 'foo.txt')}',
+    tag: 'd41d8cd98f00b204e9800998ecf8427e'
   }
 };
 Object.freeze(foo);`)
