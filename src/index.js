@@ -75,7 +75,7 @@ export default function ({ types: t }) {
           }
         }
 
-        const makeDetail = detail => {
+        const makeDetail = (detail) => {
           return t.objectExpression([
             t.objectProperty(t.identifier('contentLength'), t.numericLiteral(detail.contentLength)),
             t.objectProperty(t.identifier('contentType'), t.stringLiteral(detail.contentType)),
@@ -92,7 +92,7 @@ export default function ({ types: t }) {
             t.variableDeclarator(
               t.identifier(localName),
               t.objectExpression(
-                files.map(relpath => t.objectProperty(t.stringLiteral(relpath), makeDetail(details[relpath])))
+                files.map((relpath) => t.objectProperty(t.stringLiteral(relpath), makeDetail(details[relpath])))
               )
             )
           ])
