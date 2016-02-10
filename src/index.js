@@ -66,6 +66,7 @@ export default function ({ types: t }) {
           // Search relative to the source file, assuming that location is
           // derived correctly.
           cwd: fromDir,
+          nodir: true,
           strict: true
         })
 
