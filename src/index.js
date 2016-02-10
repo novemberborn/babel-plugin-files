@@ -33,6 +33,23 @@ function getPattern (path, source) {
   return pattern
 }
 
+function describeFile (src) {
+  const contents = readFileSync(src)
+  const contentLength = contents.length
+  const tag = md5Hex(contents)
+
+  const mimeType = mime.lookup(src) || 'application/octet-stream'
+  const contentType = mime.contentType(mimeType)
+
+  return {
+    contentLength,
+    contentType,
+    mimeType,
+    src,
+    tag
+  }
+}
+
 export default function ({ types: t }) {
   return {
     visitor: {
@@ -53,35 +70,23 @@ export default function ({ types: t }) {
         })
 
         const prefix = commonPathPrefix(matches)
-        const details = Object.create(null)
+        const descriptions = Object.create(null)
         const files = []
         for (const filepath of matches) {
           const src = resolve(fromDir, filepath)
-          const mimeType = mime.lookup(src) || 'application/octet-stream'
-          const contentType = mime.contentType(mimeType)
-
-          const contents = readFileSync(src)
-          const contentLength = contents.length
-          const tag = md5Hex(contents)
-
+          const desc = describeFile(src)
           const relpath = filepath.slice(prefix.length)
           files.push(relpath)
-          details[relpath] = {
-            contentLength,
-            contentType,
-            mimeType,
-            src,
-            tag
-          }
+          descriptions[relpath] = desc
         }
 
-        const makeDetail = (detail) => {
+        const makeDescription = (desc) => {
           return t.objectExpression([
-            t.objectProperty(t.identifier('contentLength'), t.numericLiteral(detail.contentLength)),
-            t.objectProperty(t.identifier('contentType'), t.stringLiteral(detail.contentType)),
-            t.objectProperty(t.identifier('mimeType'), t.stringLiteral(detail.mimeType)),
-            t.objectProperty(t.identifier('src'), t.stringLiteral(detail.src)),
-            t.objectProperty(t.identifier('tag'), t.stringLiteral(detail.tag))
+            t.objectProperty(t.identifier('contentLength'), t.numericLiteral(desc.contentLength)),
+            t.objectProperty(t.identifier('contentType'), t.stringLiteral(desc.contentType)),
+            t.objectProperty(t.identifier('mimeType'), t.stringLiteral(desc.mimeType)),
+            t.objectProperty(t.identifier('src'), t.stringLiteral(desc.src)),
+            t.objectProperty(t.identifier('tag'), t.stringLiteral(desc.tag))
           ])
         }
 
@@ -92,7 +97,7 @@ export default function ({ types: t }) {
             t.variableDeclarator(
               t.identifier(localName),
               t.objectExpression(
-                files.map((relpath) => t.objectProperty(t.stringLiteral(relpath), makeDetail(details[relpath])))
+                files.map((relpath) => t.objectProperty(t.stringLiteral(relpath), makeDescription(descriptions[relpath])))
               )
             )
           ])
