@@ -36,7 +36,7 @@ function getPattern (path, source) {
 
 function describeFile (src, relativeSrc) {
   const contents = readFileSync(src)
-  const contentLength = contents.length
+  const size = contents.length
   const tag = md5Hex(contents)
 
   const mimeType = mime.lookup(src) || 'application/octet-stream'
@@ -47,9 +47,9 @@ function describeFile (src, relativeSrc) {
   const normalizedSrc = relativeSrc.split(sep).join('/')
 
   return {
-    contentLength,
     contentType,
     mimeType,
+    size,
     src: normalizedSrc,
     tag
   }
@@ -89,9 +89,9 @@ export default function ({ types: t }) {
 
         const makeDescription = (desc) => {
           return t.objectExpression([
-            t.objectProperty(t.identifier('contentLength'), t.numericLiteral(desc.contentLength)),
             t.objectProperty(t.identifier('contentType'), t.stringLiteral(desc.contentType)),
             t.objectProperty(t.identifier('mimeType'), t.stringLiteral(desc.mimeType)),
+            t.objectProperty(t.identifier('size'), t.numericLiteral(desc.size)),
             t.objectProperty(t.identifier('src'), t.stringLiteral(desc.src)),
             t.objectProperty(t.identifier('tag'), t.stringLiteral(desc.tag))
           ])
