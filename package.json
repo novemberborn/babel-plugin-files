@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-files",
   "version": "0.1.0",
-  "description": "Babel plugin to generate references to files elsewhere on the file system",
+  "description": "Babel plugin to enable importing file metadata using a glob pattern",
   "main": "index.js",
   "files": [
     "index.js",
