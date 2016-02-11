@@ -69,21 +69,21 @@ test('generates an object with descriptions of the matched files', (t) => {
     `const foo = {
   'rfc3092.html': {
     contentType: 'text/html; charset=utf-8',
-    mimeType: 'text/html',
+    mediaType: 'text/html',
     size: 44585,
     src: 'test/fixtures/rfc3092.html',
     tag: '1b8c719d6a9c0398b7b9b3ff85763413'
   },
   'rfc3092.pdf': {
     contentType: 'application/pdf',
-    mimeType: 'application/pdf',
+    mediaType: 'application/pdf',
     size: 38334,
     src: 'test/fixtures/rfc3092.pdf',
     tag: '5459e23f9445a65c2bf61eeac5882852'
   },
   'rfc3092.txt': {
     contentType: 'text/plain; charset=utf-8',
-    mimeType: 'text/plain',
+    mediaType: 'text/plain',
     size: 29235,
     src: 'test/fixtures/rfc3092.txt',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
@@ -98,7 +98,7 @@ test('ignores matched directories', (t) => {
     `const foo = {
   'rfc3092.txt': {
     contentType: 'text/plain; charset=utf-8',
-    mimeType: 'text/plain',
+    mediaType: 'text/plain',
     size: 29235,
     src: 'test/fixtures/rfc3092.txt',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
@@ -113,14 +113,14 @@ test('object keys are the file paths without the common path prefix', (t) => {
     `const foo = {
   'nested/foo.txt': {
     contentType: 'text/plain; charset=utf-8',
-    mimeType: 'text/plain',
+    mediaType: 'text/plain',
     size: 0,
     src: 'test/fixtures/nested/foo.txt',
     tag: 'd41d8cd98f00b204e9800998ecf8427e'
   },
   'rfc3092.txt': {
     contentType: 'text/plain; charset=utf-8',
-    mimeType: 'text/plain',
+    mediaType: 'text/plain',
     size: 29235,
     src: 'test/fixtures/rfc3092.txt',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
@@ -136,7 +136,7 @@ test('file src is relative to the closest package.json', (t) => {
     `const foo = {
   'foo.txt': {
     contentType: 'text/plain; charset=utf-8',
-    mimeType: 'text/plain',
+    mediaType: 'text/plain',
     size: 0,
     src: 'foo.txt',
     tag: 'd41d8cd98f00b204e9800998ecf8427e'
@@ -152,7 +152,7 @@ test('file src is relative to working directory if there is no closest package.j
     `const foo = {
   'foo.txt': {
     contentType: 'text/plain; charset=utf-8',
-    mimeType: 'text/plain',
+    mediaType: 'text/plain',
     size: 0,
     src: 'fixtures/with-package/foo.txt',
     tag: 'd41d8cd98f00b204e9800998ecf8427e'

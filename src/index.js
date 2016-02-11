@@ -39,8 +39,8 @@ function describeFile (src, relativeSrc) {
   const size = contents.length
   const tag = md5Hex(contents)
 
-  const mimeType = mime.lookup(src) || 'application/octet-stream'
-  const contentType = mime.contentType(mimeType)
+  const mediaType = mime.lookup(src) || 'application/octet-stream'
+  const contentType = mime.contentType(mediaType)
 
   // In case the code is running on Windows, normalize the path separator to
   // a POSIX slash.
@@ -48,7 +48,7 @@ function describeFile (src, relativeSrc) {
 
   return {
     contentType,
-    mimeType,
+    mediaType,
     size,
     src: normalizedSrc,
     tag
@@ -90,7 +90,7 @@ export default function ({ types: t }) {
         const makeDescription = (desc) => {
           return t.objectExpression([
             t.objectProperty(t.identifier('contentType'), t.stringLiteral(desc.contentType)),
-            t.objectProperty(t.identifier('mimeType'), t.stringLiteral(desc.mimeType)),
+            t.objectProperty(t.identifier('mediaType'), t.stringLiteral(desc.mediaType)),
             t.objectProperty(t.identifier('size'), t.numericLiteral(desc.size)),
             t.objectProperty(t.identifier('src'), t.stringLiteral(desc.src)),
             t.objectProperty(t.identifier('tag'), t.stringLiteral(desc.tag))
