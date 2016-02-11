@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs'
-import { dirname, relative, resolve } from 'path'
+import { dirname, relative, resolve, sep } from 'path'
 
 import commonPathPrefix from 'common-path-prefix'
 import glob from 'glob'
@@ -42,11 +42,15 @@ function describeFile (src, relativeSrc) {
   const mimeType = mime.lookup(src) || 'application/octet-stream'
   const contentType = mime.contentType(mimeType)
 
+  // In case the code is running on Windows, normalize the path separator to
+  // a POSIX slash.
+  const normalizedSrc = relativeSrc.split(sep).join('/')
+
   return {
     contentLength,
     contentType,
     mimeType,
-    src: relativeSrc,
+    src: normalizedSrc,
     tag
   }
 }

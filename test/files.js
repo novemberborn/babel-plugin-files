@@ -25,8 +25,12 @@ function attempt (code) {
 }
 
 function check (msg, sourceRoot = __dirname) {
-  const preface = `${join(sourceRoot, 'files.js')}: `
-  return (err) => err instanceof SyntaxError && err.message.slice(0, preface.length) === preface && err.message.slice(preface.length) === msg
+  return (err) => {
+    if (!(err instanceof SyntaxError)) return false
+
+    const parts = err.message.split('files.js: ')
+    return parts[1] === msg
+  }
 }
 
 test('throws when importing members', (t) => {
@@ -67,21 +71,21 @@ test('generates an object with descriptions of the matched files', (t) => {
     contentLength: 44585,
     contentType: 'text/html; charset=utf-8',
     mimeType: 'text/html',
-    src: '${join('test', 'fixtures', 'rfc3092.html')}',
+    src: 'test/fixtures/rfc3092.html',
     tag: '1b8c719d6a9c0398b7b9b3ff85763413'
   },
   'rfc3092.pdf': {
     contentLength: 38334,
     contentType: 'application/pdf',
     mimeType: 'application/pdf',
-    src: '${join('test', 'fixtures', 'rfc3092.pdf')}',
+    src: 'test/fixtures/rfc3092.pdf',
     tag: '5459e23f9445a65c2bf61eeac5882852'
   },
   'rfc3092.txt': {
     contentLength: 29235,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${join('test', 'fixtures', 'rfc3092.txt')}',
+    src: 'test/fixtures/rfc3092.txt',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
   }
 };
@@ -96,7 +100,7 @@ test('ignores matched directories', (t) => {
     contentLength: 29235,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${join('test', 'fixtures', 'rfc3092.txt')}',
+    src: 'test/fixtures/rfc3092.txt',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
   }
 };
@@ -111,14 +115,14 @@ test('object keys are the file paths without the common path prefix', (t) => {
     contentLength: 0,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${join('test', 'fixtures', 'nested', 'foo.txt')}',
+    src: 'test/fixtures/nested/foo.txt',
     tag: 'd41d8cd98f00b204e9800998ecf8427e'
   },
   'rfc3092.txt': {
     contentLength: 29235,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${join('test', 'fixtures', 'rfc3092.txt')}',
+    src: 'test/fixtures/rfc3092.txt',
     tag: 'a9a1b44ecd667818a0c21737bfb0102d'
   }
 };
@@ -150,7 +154,7 @@ test('file src is relative to working directory if there is no closest package.j
     contentLength: 0,
     contentType: 'text/plain; charset=utf-8',
     mimeType: 'text/plain',
-    src: '${join('fixtures', 'with-package', 'foo.txt')}',
+    src: 'fixtures/with-package/foo.txt',
     tag: 'd41d8cd98f00b204e9800998ecf8427e'
   }
 };
