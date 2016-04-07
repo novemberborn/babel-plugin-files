@@ -25,7 +25,7 @@ function attempt (code) {
 }
 
 function check (msg, sourceRoot = __dirname) {
-  return (err) => {
+  return err => {
     if (!(err instanceof SyntaxError)) return false
 
     const parts = err.message.split('files.js: ')
@@ -33,37 +33,37 @@ function check (msg, sourceRoot = __dirname) {
   }
 }
 
-test('throws when importing members', (t) => {
+test('throws when importing members', t => {
   t.throws(
     attempt("import { foo } from 'files:fixtures/*'"),
     check('Can only import the default member from a files: pattern'))
 })
 
-test('throws when importing all members', (t) => {
+test('throws when importing all members', t => {
   t.throws(
     attempt("import * as foo from 'files:fixtures/*'"),
     check('Can only import the default member from a files: pattern'))
 })
 
-test('throws when importing for side-effects', (t) => {
+test('throws when importing for side-effects', t => {
   t.throws(
     attempt("import 'files:fixtures/*'"),
     check('Can only import the default member from a files: pattern'))
 })
 
-test('throws if import does not contain a pattern', (t) => {
+test('throws if import does not contain a pattern', t => {
   t.throws(
     attempt("import foo from 'files:'"),
     check("Missing glob pattern 'files:'"))
 })
 
-test('throws if pattern is absolute', (t) => {
+test('throws if pattern is absolute', t => {
   t.throws(
     attempt("import foo from 'files:/root'"),
     check("Glob pattern must be relative, was '/root'"))
 })
 
-test('generates an object with descriptions of the matched files', (t) => {
+test('generates an object with descriptions of the matched files', t => {
   t.is(
     transform("import foo from 'files:fixtures/rfc3092.*'"),
     `const foo = {
@@ -92,7 +92,7 @@ test('generates an object with descriptions of the matched files', (t) => {
 Object.freeze(foo);`)
 })
 
-test('ignores matched directories', (t) => {
+test('ignores matched directories', t => {
   t.is(
     transform("import foo from 'files:fixtures/!(*.html|*.pdf|with-package)'"),
     `const foo = {
@@ -107,7 +107,7 @@ test('ignores matched directories', (t) => {
 Object.freeze(foo);`)
 })
 
-test('object keys are the file paths without the common path prefix', (t) => {
+test('object keys are the file paths without the common path prefix', t => {
   t.is(
     transform("import foo from 'files:fixtures/{*.txt,nested/*.txt}'"),
     `const foo = {
@@ -129,7 +129,7 @@ test('object keys are the file paths without the common path prefix', (t) => {
 Object.freeze(foo);`)
 })
 
-test('file src is relative to the closest package.json', (t) => {
+test('file src is relative to the closest package.json', t => {
   const sourceRoot = join(__dirname, 'fixtures', 'with-package')
   t.is(
     transform("import foo from 'files:*.txt'", sourceRoot),
@@ -145,7 +145,7 @@ test('file src is relative to the closest package.json', (t) => {
 Object.freeze(foo);`)
 })
 
-test('file src is relative to working directory if there is no closest package.json', (t) => {
+test('file src is relative to working directory if there is no closest package.json', t => {
   const sourceRoot = join(__dirname, 'fixtures', 'with-package')
   t.is(
     transform("import foo from 'files:*.txt'", sourceRoot, pluginWithoutPkgDir),

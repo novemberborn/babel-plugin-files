@@ -87,7 +87,7 @@ export default function ({ types: t }) {
           descriptions[relpath] = desc
         }
 
-        const makeDescription = (desc) => {
+        const makeDescription = desc => {
           return t.objectExpression([
             t.objectProperty(t.identifier('contentType'), t.stringLiteral(desc.contentType)),
             t.objectProperty(t.identifier('mediaType'), t.stringLiteral(desc.mediaType)),
@@ -104,7 +104,7 @@ export default function ({ types: t }) {
             t.variableDeclarator(
               t.identifier(localName),
               t.objectExpression(
-                files.map((relpath) => t.objectProperty(t.stringLiteral(relpath), makeDescription(descriptions[relpath])))
+                files.map(relpath => t.objectProperty(t.stringLiteral(relpath), makeDescription(descriptions[relpath])))
               )
             )
           ])
