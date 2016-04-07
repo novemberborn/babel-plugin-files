@@ -46,5 +46,9 @@
     "md5-hex": "^1.2.1",
     "mime-types": "^2.1.9",
     "pkg-dir": "^1.0.0"
+  },
+  "babel": {
+    "presets": ["es2015"],
+    "plugins": ["transform-runtime"]
   }
 }
