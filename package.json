@@ -40,7 +40,7 @@
     "rimraf": "^2.5.1"
   },
   "dependencies": {
-    "babel-runtime": "^6.5.0",
+    "babel-runtime": "^6.9.0",
     "common-path-prefix": "^1.0.0",
     "glob": "^7.0.0",
     "md5-hex": "^1.2.1",
@@ -48,7 +48,11 @@
     "pkg-dir": "^1.0.0"
   },
   "babel": {
-    "presets": ["es2015"],
-    "plugins": ["transform-runtime"]
+    "presets": [
+      "es2015"
+    ],
+    "plugins": [
+      "transform-runtime"
+    ]
   }
 }
