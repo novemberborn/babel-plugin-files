@@ -160,3 +160,23 @@ test('file src is relative to working directory if there is no closest package.j
 };
 Object.freeze(foo);`)
 })
+
+test('defaults to application/octet-stream for unknown file types', t => {
+  t.is(
+    transform("import foo from 'files:fixtures/unknown/*'"),
+    `const foo = {
+  'foo.💩': {
+    contentType: 'application/octet-stream',
+    mediaType: 'application/octet-stream',
+    size: 5,
+    src: 'test/fixtures/unknown/foo.💩',
+    tag: '69f8a61d4ae5157ea81fd82ec0e777a9'
+  }
+};
+Object.freeze(foo);`)
+})
+
+test('ignores unrelated imports', t => {
+  const code = 'import foo from "foo";'
+  t.true(transform(code) === code)
+})
