@@ -4,7 +4,8 @@
   "description": "Babel plugin to enable importing file metadata using a glob pattern",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "clean": "rimraf dist",
