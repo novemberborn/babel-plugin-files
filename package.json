@@ -2,15 +2,14 @@
   "name": "babel-plugin-files",
   "version": "1.0.0",
   "description": "Babel plugin to enable importing file metadata using a glob pattern",
-  "main": "index.js",
+  "main": "dist/index.js",
   "files": [
-    "index.js",
-    "index.js.map"
+    "dist"
   ],
   "scripts": {
-    "clean": "rimraf index.js index.js.map",
+    "clean": "rimraf dist",
     "prebuild": "npm run clean",
-    "build": "babel src --out-dir ./ --source-maps",
+    "build": "babel src --out-dir dist --source-maps",
     "prepublish": "npm run build",
     "test": "ava",
     "posttest": "as-i-preach",
