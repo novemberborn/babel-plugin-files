@@ -11,10 +11,10 @@
     "clean": "rimraf index.js index.js.map",
     "prebuild": "npm run clean",
     "build": "babel src --out-dir ./ --source-maps",
-    "build:watch": "npm run build -- --watch",
     "prepublish": "npm run build",
     "test": "ava",
-    "posttest": "as-i-preach"
+    "posttest": "as-i-preach",
+    "watch:build": "npm run build -- --watch"
   },
   "repository": {
     "type": "git",
