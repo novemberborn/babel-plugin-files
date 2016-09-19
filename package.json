@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/novemberborn/babel-plugin-files#readme",
   "devDependencies": {
-    "@novemberborn/as-i-preach": "^4.0.1",
+    "@novemberborn/as-i-preach": "^5.0.0",
     "ava": "^0.16.0",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.7.4",
