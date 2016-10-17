@@ -165,11 +165,11 @@ test('defaults to application/octet-stream for unknown file types', t => {
   t.is(
     transform("import foo from 'files:fixtures/unknown/*'"),
     `const foo = {
-  'foo.💩': {
+  'foo.\\uD83D\\uDCA9': {
     contentType: 'application/octet-stream',
     mediaType: 'application/octet-stream',
     size: 5,
-    src: 'test/fixtures/unknown/foo.💩',
+    src: 'test/fixtures/unknown/foo.\\uD83D\\uDCA9',
     tag: '69f8a61d4ae5157ea81fd82ec0e777a9'
   }
 };
