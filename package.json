@@ -66,5 +66,6 @@
       "text"
     ],
     "sourceMap": false
-  }
+  },
+  "standard-engine": "@novemberborn/as-i-preach"
 }
