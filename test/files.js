@@ -4,7 +4,8 @@ import test from 'ava'
 import { transform as babelTransform } from 'babel-core'
 import proxyquire from 'proxyquire'
 
-const regularPlugin = require('../').default
+import regularPlugin from '../'
+
 const pluginWithoutPkgDir = proxyquire('../', {
   'pkg-dir': {
     sync () { return null }
