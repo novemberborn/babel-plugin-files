@@ -154,7 +154,7 @@ test('file src is relative to working directory if there is no closest package.j
       contentType: 'text/plain; charset=utf-8',
       mediaType: 'text/plain',
       size: 0,
-      src: 'fixtures/with-package/foo.txt',
+      src: 'test/fixtures/with-package/foo.txt',
       tag: 'd41d8cd98f00b204e9800998ecf8427e'
     }
   }
