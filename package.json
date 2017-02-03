@@ -58,6 +58,13 @@
       "transform-runtime"
     ]
   },
+  "greenkeeper": {
+    "ignore": [
+      "@novemberborn/as-i-preach",
+      "ava",
+      "md5-hex"
+    ]
+  },
   "nyc": {
     "instrument": false,
     "reporter": [
