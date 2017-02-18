@@ -32,7 +32,7 @@
   "homepage": "https://github.com/novemberborn/babel-plugin-files#readme",
   "devDependencies": {
     "@novemberborn/as-i-preach": "^6.0.0",
-    "ava": "^0.17.0",
+    "ava": "^0.18.2",
     "babel-cli": "^6.5.1",
     "babel-core": "^6.7.4",
     "babel-plugin-istanbul": "^3.0.0",
