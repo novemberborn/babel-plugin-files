@@ -62,7 +62,8 @@
     "ignore": [
       "@novemberborn/as-i-preach",
       "ava",
-      "md5-hex"
+      "md5-hex",
+      "pkg-dir"
     ]
   },
   "nyc": {
